@@ -2,16 +2,16 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <list>
+#include <set>
 #include "Goat.h"
 using namespace std;
 
 const int SZ_NAMES = 200, SZ_COLORS = 25, MAX_AGE = 20;
 
-int select_goat(list<Goat> trip);
-void delete_goat(list<Goat> &trip);
-void add_goat(list<Goat> &trip, string name, int age, string color);
-void display_trip(list<Goat> trip);
+int select_goat(set<Goat> trip);
+void delete_goat(set<Goat> &trip);
+void add_goat(set<Goat> &trip, string name, int age, string color);
+void display_trip(set<Goat> trip);
 int main_menu();
 
 int main() {
@@ -30,7 +30,7 @@ int main() {
     while (fin1 >> colors[i++]);
     fin1.close();
 
-    list<Goat> trip;
+    set<Goat> trip;
 
     bool quit = false;
     while (!quit){ // Loops until the user enters 4 to quit
@@ -74,12 +74,13 @@ int main_menu(){
     return choice;
 }
 
-void add_goat(list<Goat> &trip, string name, int age, string color){
-    trip.emplace_back(name, age, color);
+void add_goat(set<Goat> &trip, string name, int age, string color){
+    Goat tmp(name, age, color);
+    trip.insert(tmp);
     cout << "> Added goat named " << name << " to the trip.\n";
 }
 
-void display_trip(list<Goat> trip){
+void display_trip(set<Goat> trip){
     int i = 0; cout << endl;
     for (auto goat : trip){
         i++;
@@ -87,7 +88,7 @@ void display_trip(list<Goat> trip){
     }
 }
 
-int select_goat(list<Goat> trip){
+int select_goat(set<Goat> trip){
     int max = trip.size();
 
     // Prompt
@@ -104,9 +105,9 @@ int select_goat(list<Goat> trip){
     return choice-1; // change it to 0 - (size-1) range
 }
 
-void delete_goat(list<Goat> &trip){
+void delete_goat(set<Goat> &trip){
     int choice = select_goat(trip);
-    list<Goat>::iterator i = trip.begin();
+    set<Goat>::iterator i = trip.begin();
     advance(i, choice);
     trip.erase(i);
 
